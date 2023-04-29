@@ -1,6 +1,16 @@
 from django.shortcuts import render
+import os
+import dotenv
 import json
 import requests
+from pathlib import Path
+
+ROOT_DIR=Path(__file__).resolve().parent.parent
+# Add .env variables anywhere before SECRET_KEY
+dotenv_file = os.path.join(ROOT_DIR, ".env.secret")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+API_SECRET_KEY = os.environ['LOOKUP_API_SECRET_KEY']
 
 # Create your views here.
 def home(request):
@@ -8,7 +18,7 @@ def home(request):
     if request.method == "POST":
         zipcode = request.POST['zipcodeInput']
         if zipcode:
-            REMOTE_API = 'https://www.airnowapi.org/aq/forecast/zipCode/?format=application/json&zipCode={}&date=2023-04-29&distance=5&API_KEY=7CBBF8DD-2C91-42FD-A067-6758B85F8C17'.format(zipcode)
+            REMOTE_API = 'https://www.airnowapi.org/aq/forecast/zipCode/?format=application/json&zipCode={}&date=2023-04-29&distance=5&API_KEY={}'.format(zipcode, API_SECRET_KEY)
             response = None
             try:
                 response = requests.get(REMOTE_API)

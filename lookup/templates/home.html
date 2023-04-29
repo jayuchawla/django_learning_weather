@@ -1,4 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Hello</h1>
+    {% if data %}
+        <div class="jumbotron customJumbotron {{ categoryColorIdentifier }}">
+            <h1 class="display-4">{{ data.0.Category.Name }}</h1>
+            <p class="lead">{{ data.0.ReportingArea }} AQI: {{ data.0.AQI }}</p>
+            <hr class="my-4">
+        </div>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% endif %}
 {% endblock  %}
